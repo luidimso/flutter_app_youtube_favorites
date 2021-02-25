@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_youtube_favorites/services/search_service.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -22,7 +23,9 @@ class HomePage extends StatelessWidget {
           ),
           IconButton(
               icon: Icon(Icons.search),
-              onPressed: () {}
+              onPressed: () {
+                showSearch(context: context, delegate: SearchService());
+              }
           )
         ],
       ),

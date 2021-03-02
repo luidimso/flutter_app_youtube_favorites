@@ -8,10 +8,10 @@ class VideoService implements BlocBase {
   Youtube api;
   List<Video> videos;
 
-  final StreamController _videosController = StreamController();
+  final StreamController<List<Video>> _videosController = StreamController<List<Video>>();
   Stream get outVideos => _videosController.stream;
 
-  final StreamController _searchController = StreamController();
+  final StreamController<String> _searchController = StreamController<String>();
   Sink get inSearch => _searchController.sink;
 
   VideoService() {
@@ -27,7 +27,7 @@ class VideoService implements BlocBase {
   }
 
   void _search(String search) async {
-    api.search(search);
-    print(videos);
+    videos = await api.search(search);
+    _videosController.sink.add(videos);
   }
 }

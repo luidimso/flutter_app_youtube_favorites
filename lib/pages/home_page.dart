@@ -1,5 +1,7 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_youtube_favorites/services/search_service.dart';
+import 'package:flutter_app_youtube_favorites/services/video_service.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -25,12 +27,23 @@ class HomePage extends StatelessWidget {
               icon: Icon(Icons.search),
               onPressed: () async {
                 String result = await showSearch(context: context, delegate: SearchService());
-                print(result);
+                if(result != null) BlocProvider.of<VideoService>(context).inSearch.add(result);
               }
           )
         ],
       ),
-      body: Container(),
+      body: StreamBuilder(
+        stream: BlocProvider.of<VideoService>(context).outVideos,
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            return ListView.builder(
+                itemBuilder: null
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_youtube_favorites/components/video_component.dart';
 import 'package:flutter_app_youtube_favorites/services/search_service.dart';
 import 'package:flutter_app_youtube_favorites/services/video_service.dart';
 
@@ -7,6 +8,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black87,
       appBar: AppBar(
         title: Container(
           height: 25,
@@ -37,7 +39,10 @@ class HomePage extends StatelessWidget {
         builder: (context, snapshot) {
           if(snapshot.hasData) {
             return ListView.builder(
-                itemBuilder: null
+                itemBuilder: (context, index) {
+                  return VideoComponent(snapshot.data[index]);
+                },
+                itemCount: snapshot.data.length,
             );
           } else {
             return Container();

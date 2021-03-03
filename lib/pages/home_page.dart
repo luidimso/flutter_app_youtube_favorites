@@ -7,6 +7,8 @@ import 'package:flutter_app_youtube_favorites/services/video_service.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final videoService = BlocProvider.of<VideoService>(context);
+
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: AppBar(
@@ -29,20 +31,35 @@ class HomePage extends StatelessWidget {
               icon: Icon(Icons.search),
               onPressed: () async {
                 String result = await showSearch(context: context, delegate: SearchService());
-                if(result != null) BlocProvider.of<VideoService>(context).inSearch.add(result);
+                if(result != null) videoService.inSearch.add(result);
               }
           )
         ],
       ),
       body: StreamBuilder(
-        stream: BlocProvider.of<VideoService>(context).outVideos,
+        stream: videoService.outVideos,
+        initialData: [],
         builder: (context, snapshot) {
           if(snapshot.hasData) {
             return ListView.builder(
                 itemBuilder: (context, index) {
-                  return VideoComponent(snapshot.data[index]);
+                  if(index < snapshot.data.length) {
+                    return VideoComponent(snapshot.data[index]);
+                  } else if(index > 1){
+                    videoService.inSearch.add(null);
+                    return Container(
+                      height: 40,
+                      width: 40,
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
                 },
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data.length + 1,
             );
           } else {
             return Container();

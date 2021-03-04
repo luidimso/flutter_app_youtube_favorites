@@ -1,5 +1,7 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_youtube_favorites/models/video.dart';
+import 'package:flutter_app_youtube_favorites/services/favorite_service.dart';
 
 class VideoComponent extends StatelessWidget {
   final Video video;
@@ -8,6 +10,8 @@ class VideoComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final favoriteService = BlocProvider.of<FavoriteService>(context);
+
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: 4
@@ -49,11 +53,23 @@ class VideoComponent extends StatelessWidget {
                     ],
                   )
               ),
-              IconButton(
-                  icon: Icon(Icons.star_border),
-                  color: Colors.white,
-                  iconSize: 30,
-                  onPressed: () {}
+              StreamBuilder<Map<String, Video>>(
+                stream: favoriteService.outFavorite,
+                initialData: {},
+                builder: (context, snapshot) {
+                  if(snapshot.hasData) {
+                    return IconButton(
+                        icon: Icon(snapshot.data.containsKey(video.id) ? Icons.star : Icons.star_border),
+                        color: Colors.white,
+                        iconSize: 30,
+                        onPressed: () {
+                          favoriteService.toggleFavorite(video);
+                        }
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                }
               )
             ],
           )

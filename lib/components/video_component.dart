@@ -55,7 +55,6 @@ class VideoComponent extends StatelessWidget {
               ),
               StreamBuilder<Map<String, Video>>(
                 stream: favoriteService.outFavorite,
-                initialData: {},
                 builder: (context, snapshot) {
                   if(snapshot.hasData) {
                     return IconButton(

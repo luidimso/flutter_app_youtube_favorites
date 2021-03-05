@@ -24,7 +24,6 @@ class HomePage extends StatelessWidget {
             alignment: Alignment.center,
             child: StreamBuilder(
               stream: BlocProvider.of<FavoriteService>(context).outFavorite,
-                initialData: {},
               builder: (context, snapshot) {
                 if(snapshot.hasData) {
                   return Text("${snapshot.data.length}");

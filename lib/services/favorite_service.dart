@@ -3,11 +3,12 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter_app_youtube_favorites/models/video.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoriteService implements BlocBase {
   Map<String, Video> _favorites = {};
-  final StreamController<Map<String, Video>> _favoriteController = StreamController<Map<String, Video>>.broadcast();
+  final _favoriteController = BehaviorSubject<Map<String, Video>>(seedValue: {});
   Stream<Map<String, Video>> get outFavorite => _favoriteController.stream;
 
   FavoriteService() {

@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_youtube_favorites/components/video_component.dart';
+import 'package:flutter_app_youtube_favorites/pages/favorite_page.dart';
 import 'package:flutter_app_youtube_favorites/services/favorite_service.dart';
 import 'package:flutter_app_youtube_favorites/services/search_service.dart';
 import 'package:flutter_app_youtube_favorites/services/video_service.dart';
@@ -35,7 +36,11 @@ class HomePage extends StatelessWidget {
           ),
           IconButton(
               icon: Icon(Icons.star),
-              onPressed: () {}
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => FavoritePage()
+                ));
+              }
           ),
           IconButton(
               icon: Icon(Icons.search),
